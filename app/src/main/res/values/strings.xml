@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Wack a Mole</string>
+    <string name="btnPlay">Play</string>
+    <string name="btnFinish">Finish</string>
+    <string name="app_final">Finished</string>
+    <string name="btnRanking">Ranking</string>
+    <string name="btnReturn">Voltar</string>
+    <string name="lblRanking">Ranking</string>
+</resources>
