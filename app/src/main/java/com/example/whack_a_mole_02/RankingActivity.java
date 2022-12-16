@@ -1,4 +1,4 @@
-package com.example.wack_a_mole;
+package com.example.whack_a_mole_02;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,20 +16,27 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class RankingActivity extends AppCompatActivity {
+
     Button btnReturn;
-    TextView txtRanking;
+    TextView txtRanking; //TODO: Lógica para alterar o texto do ranking
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ranking);
+
         btnReturn = findViewById(R.id.btnReturn);
-        txtRanking = findViewById(R.id.txtRanking);
+        txtRanking = findViewById(R.id.text_ranking);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+
+        /*TODO:
+        - Pegar os últimos 10 scores
+        - Fazer um bubble sort para organizar em ordem decrescente
+        */
 
         int score = 0;
 
@@ -42,7 +49,7 @@ public class RankingActivity extends AppCompatActivity {
             String line = br.readLine();
             score = Integer.parseInt(line);
 
-            while ( line != null){
+            while (line != null) {
                 score = Integer.parseInt(line);
                 line = br.readLine();
             }

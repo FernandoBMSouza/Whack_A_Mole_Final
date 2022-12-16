@@ -1,9 +1,7 @@
 <resources>
-    <string name="app_name">Wack a Mole</string>
-    <string name="btnPlay">Play</string>
-    <string name="btnFinish">Finish</string>
-    <string name="app_final">Finished</string>
-    <string name="btnRanking">Ranking</string>
-    <string name="btnReturn">Voltar</string>
-    <string name="lblRanking">Ranking</string>
+    <string name="app_name">Whack a Mole</string>
+    <string name="button_play">Jogar</string>
+    <string name="button_ranking">Ranking</string>
+    <string name="button_return">Voltar</string>
+    <string name="text_finish">Fim de Jogo</string>
 </resources>

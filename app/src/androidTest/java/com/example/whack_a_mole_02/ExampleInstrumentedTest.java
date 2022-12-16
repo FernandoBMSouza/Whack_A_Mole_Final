@@ -1,4 +1,4 @@
-package com.example.wack_a_mole;
+package com.example.whack_a_mole_02;
 
 import android.content.Context;
 
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
     public void useAppContext() {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        assertEquals("com.example.wack_a_mole", appContext.getPackageName());
+        assertEquals("com.example.whack_a_mole_02", appContext.getPackageName());
     }
 }

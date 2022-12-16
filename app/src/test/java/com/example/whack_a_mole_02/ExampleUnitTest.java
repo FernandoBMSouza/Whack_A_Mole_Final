@@ -1,4 +1,4 @@
-package com.example.wack_a_mole;
+package com.example.whack_a_mole_02;
 
 import org.junit.Test;
 

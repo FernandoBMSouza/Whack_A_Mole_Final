@@ -8,39 +8,30 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/background"
         android:orientation="vertical"
-        android:gravity="center">
+        android:gravity="center"
+        android:background="@drawable/background">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="100dp"
-            android:text="@string/lblRanking"
-            android:textAlignment = "center"
-            android:textSize="43sp"
-            android:textStyle="bold"
-            android:textColor="@color/orange">
-        </TextView>
-
-        <TextView
-            android:id="@+id/txtRanking"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Temp"
-            android:textAlignment = "center"
-            android:textSize="24sp"
-            android:textColor="@color/black">
-        </TextView>
+            android:text="@string/button_ranking"
+            android:textStyle="bold"
+            android:textSize="42sp"/>
+
+        <TextView
+            android:id="@+id/text_ranking"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1. 000"
+            android:textSize="24sp"/>
 
         <Button
             android:id="@+id/btnReturn"
-            android:layout_width="200dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="onClick"
-            android:text="@string/btnReturn">
-        </Button>
-
-
+            android:text="@string/button_return"
+            android:onClick="onClick" />
 
     </LinearLayout>
 

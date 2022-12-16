@@ -1,28 +1,27 @@
-package com.example.wack_a_mole;
+package com.example.whack_a_mole_02;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
-public class FinalActivity extends Activity {
+public class EndActivity extends AppCompatActivity {
 
-    Button btnFinish;
+    Button btnReturn;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_final);
+        setContentView(R.layout.activity_end);
 
-        btnFinish = findViewById(R.id.btnFinish);
+        btnReturn = findViewById(R.id.btnReturn);
     }
 
-    public void onClick(View view) {
-        if(view == btnFinish)
-        {
+    public void onClick(View view){
+        if(view == btnReturn){
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
         }

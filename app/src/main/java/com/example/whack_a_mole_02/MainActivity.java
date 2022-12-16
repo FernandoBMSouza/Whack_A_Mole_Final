@@ -1,4 +1,4 @@
-package com.example.wack_a_mole;
+package com.example.whack_a_mole_02;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -20,8 +20,8 @@ public class MainActivity extends AppCompatActivity {
         btnRanking = findViewById(R.id.btnRanking);
     }
 
-    public void onClick(View view){
-        if(view == btnPlay){
+    public void onClick(View view) {
+        if(view == btnPlay) {
             Intent intent = new Intent(this, GameActivity.class);
             startActivity(intent);
         }
