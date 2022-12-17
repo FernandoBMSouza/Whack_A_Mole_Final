@@ -14,11 +14,14 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.List;
 
 public class RankingActivity extends AppCompatActivity {
 
     Button btnReturn;
     TextView txtRanking; //TODO: Lógica para alterar o texto do ranking
+    int[] highScores = new int[10];
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -69,6 +72,19 @@ public class RankingActivity extends AppCompatActivity {
         if(view == btnReturn){
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
+        }
+    }
+
+    public void bubbleSort() {
+        for (int i = 9; i > 0; i--) {
+            for (int j = 0; j < i; j++) {
+                if (highScores[j] < highScores[j + 1]) {
+                    // Faz a troca de numeros sem usar auxiliar
+                    highScores[j] += highScores[j + 1];
+                    highScores[j + 1] = highScores[j] - highScores[j + 1];
+                    highScores[j] -= highScores[j + 1];
+                }
+            }
         }
     }
 }

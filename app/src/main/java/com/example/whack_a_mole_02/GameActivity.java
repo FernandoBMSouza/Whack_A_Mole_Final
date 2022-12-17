@@ -13,6 +13,7 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -67,13 +68,12 @@ public class GameActivity extends AppCompatActivity implements Runnable {
 
         if(time < END_TIME){
             MoleShow(ChooseRandomMole());
+            handler.postDelayed(this, DELAY_BETWEEN_MOLE);
         }
         else {
             saveScore();
             chronometer.stop();
         }
-
-        handler.postDelayed(this, DELAY_BETWEEN_MOLE);
     }
 
     public void onClick(View view){
