@@ -2,6 +2,7 @@ package com.example.whack_a_mole_02;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -14,14 +15,12 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.List;
+import java.util.ArrayList;
 
 public class RankingActivity extends AppCompatActivity {
 
     Button btnReturn;
     TextView txtRanking; //TODO: Lógica para alterar o texto do ranking
-    int[] highScores = new int[10];
-
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -41,7 +40,7 @@ public class RankingActivity extends AppCompatActivity {
         - Fazer um bubble sort para organizar em ordem decrescente
         */
 
-        int score = 0;
+        ArrayList<Integer> scores = new ArrayList<Integer>();
 
         try {
             FileInputStream fis = openFileInput("score.txt");
@@ -50,10 +49,12 @@ public class RankingActivity extends AppCompatActivity {
                     new InputStreamReader(fis));
 
             String line = br.readLine();
-            score = Integer.parseInt(line);
+            //scores.add(Integer.parseInt(line));
 
             while (line != null) {
-                score = Integer.parseInt(line);
+                int v = Integer.parseInt(line);
+                scores.add(v);
+                Log.i("Score", "Line: " + line);
                 line = br.readLine();
             }
 
@@ -65,26 +66,35 @@ public class RankingActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        txtRanking.setText(String.valueOf(score));
+        for (int i = scores.size() - 1; i > 0; i--) {
+            for (int j = 0; j < i; j++) {
+                if (scores.get(j) < scores.get(j + 1)) {
+                    // Faz a troca de numeros sem usar auxiliar
+                    scores.set(j, scores.get(j) + scores.get(j + 1));
+                    scores.set(j + 1, scores.get(j) - scores.get(j + 1));
+                    scores.set(j, scores.get(j) - scores.get(j + 1));
+                }
+            }
+        }
+
+        String txt = "";
+        int size = scores.size();
+
+        if(size > 10)
+            size = 10;
+
+        for(int i = 0; i < size; i++)
+        {
+            txt += "" + scores.get(i) + "\n";
+        }
+        Log.i("Score", "Tamanho: " + scores.size());
+        txtRanking.setText(txt);
     }
 
     public void onClick(View view){
         if(view == btnReturn){
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
-        }
-    }
-
-    public void bubbleSort() {
-        for (int i = 9; i > 0; i--) {
-            for (int j = 0; j < i; j++) {
-                if (highScores[j] < highScores[j + 1]) {
-                    // Faz a troca de numeros sem usar auxiliar
-                    highScores[j] += highScores[j + 1];
-                    highScores[j + 1] = highScores[j] - highScores[j + 1];
-                    highScores[j] -= highScores[j + 1];
-                }
-            }
         }
     }
 }

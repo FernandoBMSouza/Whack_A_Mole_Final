@@ -13,7 +13,6 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -26,6 +25,7 @@ public class GameActivity extends AppCompatActivity implements Runnable {
     Handler handler = new Handler();
     Chronometer chronometer;
     TextView txtScore;
+    Boolean isSaved = false;
 
     final int DELAY_START = 500;
     final int DELAY_MOLE_UP = 800;
@@ -52,6 +52,7 @@ public class GameActivity extends AppCompatActivity implements Runnable {
         btnMoles[6] = findViewById(R.id.btnMole07);
         btnMoles[7] = findViewById(R.id.btnMole08);
         btnMoles[8] = findViewById(R.id.btnMole09);
+        isSaved = false;
     }
 
     @Override
@@ -68,12 +69,18 @@ public class GameActivity extends AppCompatActivity implements Runnable {
 
         if(time < END_TIME){
             MoleShow(ChooseRandomMole());
-            handler.postDelayed(this, DELAY_BETWEEN_MOLE);
         }
         else {
-            saveScore();
+
+            if(!isSaved) {
+                saveScore();
+                isSaved = true;
+            }
+
             chronometer.stop();
         }
+
+        handler.postDelayed(this, DELAY_BETWEEN_MOLE);
     }
 
     public void onClick(View view){
