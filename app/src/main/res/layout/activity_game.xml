@@ -23,21 +23,27 @@
                 android:layout_width="70sp"
                 android:layout_height="70sp"
                 android:layout_marginHorizontal="32sp"
-                android:background="@drawable/mole_down"></Button>
+                android:background="@drawable/mole_down"
+                android:foreground="@drawable/mole_down"
+                android:onClick="onClickMole"></Button>
 
             <Button
                 android:id="@+id/btnMole02"
                 android:layout_width="70sp"
                 android:layout_height="70sp"
                 android:layout_marginHorizontal="32dp"
-                android:background="@drawable/mole_down"></Button>
+                android:background="@drawable/mole_down"
+                android:foreground="@drawable/mole_down"
+                android:onClick="onClickMole"></Button>
 
             <Button
                 android:id="@+id/btnMole03"
                 android:layout_width="70sp"
                 android:layout_height="70sp"
                 android:layout_marginHorizontal="32sp"
-                android:background="@drawable/mole_down"></Button>
+                android:background="@drawable/mole_down"
+                android:foreground="@drawable/mole_down"
+                android:onClick="onClickMole"></Button>
 
         </LinearLayout>
 
@@ -52,21 +58,27 @@
                 android:layout_width="70sp"
                 android:layout_height="70sp"
                 android:layout_marginHorizontal="32sp"
-                android:background="@drawable/mole_down"></Button>
+                android:background="@drawable/mole_down"
+                android:foreground="@drawable/mole_down"
+                android:onClick="onClickMole"></Button>
 
             <Button
                 android:id="@+id/btnMole05"
                 android:layout_width="70sp"
                 android:layout_height="70sp"
                 android:layout_marginHorizontal="32dp"
-                android:background="@drawable/mole_down"></Button>
+                android:background="@drawable/mole_down"
+                android:foreground="@drawable/mole_down"
+                android:onClick="onClickMole"></Button>
 
             <Button
                 android:id="@+id/btnMole06"
                 android:layout_width="70sp"
                 android:layout_height="70sp"
                 android:layout_marginHorizontal="32sp"
-                android:background="@drawable/mole_down"></Button>
+                android:background="@drawable/mole_down"
+                android:foreground="@drawable/mole_down"
+                android:onClick="onClickMole"></Button>
 
         </LinearLayout>
 
@@ -81,21 +93,27 @@
                 android:layout_width="70sp"
                 android:layout_height="70sp"
                 android:layout_marginHorizontal="32sp"
-                android:background="@drawable/mole_down"></Button>
+                android:background="@drawable/mole_down"
+                android:foreground="@drawable/mole_down"
+                android:onClick="onClickMole"></Button>
 
             <Button
                 android:id="@+id/btnMole08"
                 android:layout_width="70sp"
                 android:layout_height="70sp"
                 android:layout_marginHorizontal="32dp"
-                android:background="@drawable/mole_down"></Button>
+                android:background="@drawable/mole_down"
+                android:foreground="@drawable/mole_down"
+                android:onClick="onClickMole"></Button>
 
             <Button
                 android:id="@+id/btnMole09"
                 android:layout_width="70sp"
                 android:layout_height="70sp"
                 android:layout_marginHorizontal="32sp"
-                android:background="@drawable/mole_down"></Button>
+                android:background="@drawable/mole_down"
+                android:foreground="@drawable/mole_down"
+                android:onClick="onClickMole"></Button>
 
         </LinearLayout>
 
