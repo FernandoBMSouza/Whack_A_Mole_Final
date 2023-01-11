@@ -1,44 +1,312 @@
 package com.example.whack_a_mole_02;
 
+import android.app.AlertDialog;
+import android.app.assist.AssistStructure;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
 import android.media.AudioAttributes;
 import android.media.MediaPlayer;
 import android.media.SoundPool;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
+import android.view.SurfaceHolder;
+import android.view.SurfaceView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatImageButton;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 
-public class GameActivity extends AppCompatActivity implements Runnable {
+public class GameActivity extends AppCompatActivity implements SurfaceHolder.Callback {
 
-    Button btnFinish;
-    Button[] btnMoles = new Button[9];
+    private final List<Snakes> snakesList = new ArrayList<>();
+    private static final int pointSize = 10;
+    private static final int defaultTalePoints = 3;
+    private static final int snakeColor = Color.GREEN;
+    public int speed = 500;
+    private int move = 0;
+    MediaPlayer mediaPlayer;
+    SoundPool soundPool;
+    AudioAttributes audioAttributes;
+
+    private SurfaceView srfView;
+    private TextView scoreTxt;
+    private Timer timer;
+    private int score;
+    private int positionX, positionY;
+    private SurfaceHolder surfaceHolder;
+    int snakePositionX = 50;
+    int snakePositionY = 50;
+    private Canvas canvas = null;
+    private Paint paint = null;
+    private AssistStructure.ViewNode surfaceView;
+
+    /*
+    0 = top
+    1 = right
+    2 = bottom
+    3 = left
+    */
+    @Override
+    protected void onCreate(Bundle savedInstanceState){
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_game);
+
+        srfView = findViewById(R.id.surfaceView);
+        scoreTxt= findViewById(R.id.scoreTxt);
+        final AppCompatImageButton topBtn = findViewById(R.id.topBtn);
+        final AppCompatImageButton leftBtn = findViewById(R.id.leftBtn);
+        final AppCompatImageButton rightBtn = findViewById(R.id.rightBtn);
+        final AppCompatImageButton botBtn = findViewById(R.id.bottomBtn);
+
+        srfView.getHolder().addCallback(this);
+
+        audioAttributes = new AudioAttributes.Builder()
+                .setUsage(AudioAttributes.USAGE_GAME)
+                .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                .build();
+
+
+
+        mediaPlayer = MediaPlayer.create(this, R.raw.music);
+        soundPool = new SoundPool.Builder()
+                .setAudioAttributes(audioAttributes)
+                .build();
+
+
+
+        topBtn.setOnClickListener(new View.OnClickListener()    {
+            @Override
+            public void onClick(View view) {
+                move = 0;
+            }
+    });
+        leftBtn.setOnClickListener(new View.OnClickListener()    {
+            @Override
+            public void onClick(View view) {
+                move = 1;
+            }
+        });
+        rightBtn.setOnClickListener(new View.OnClickListener()    {
+            @Override
+            public void onClick(View view) {
+                move = 2;
+            }
+        });
+        botBtn.setOnClickListener(new View.OnClickListener()    {
+            @Override
+            public void onClick(View view) {
+                move = 3;
+            }
+        });
+    }
+
+    @Override
+    public void surfaceCreated(@NonNull SurfaceHolder surfaceHolder) {
+        this.surfaceHolder = surfaceHolder;
+
+        init();
+    }
+
+    @Override
+    public void surfaceChanged(@NonNull SurfaceHolder surfaceHolder, int i, int i1, int i2) {
+
+    }
+
+    @Override
+    public void surfaceDestroyed(@NonNull SurfaceHolder surfaceHolder) {
+
+    }
+    private void init()    {
+       snakesList.clear();
+       scoreTxt.setText("0");
+       score = 0;
+       move = 0;
+       int startPositionX = 30;
+       int startPositionY = 30;
+
+       for (int i = 0; i < defaultTalePoints; i++)
+        {
+            Snakes snakes = new Snakes(startPositionX, pointSize);
+            snakesList.add(snakes);
+
+            startPositionX = startPositionX - (pointSize * 2);
+        }
+
+        addApples();
+        moveSnake();
+
+    }
+
+    private void addApples(){
+
+        int surfaceWidth = surfaceView.getWidth() - (pointSize * 2);
+        int surfaceHeight = surfaceView.getHeight() - (pointSize * 2);
+
+        int randomXPosition = new Random().nextInt (surfaceWidth / pointSize);
+        int randomYPosition = new Random().nextInt (surfaceHeight / pointSize);
+
+        if((randomXPosition % 2) != 0){
+            randomXPosition = randomXPosition + 1;
+        }
+        if((randomYPosition % 2) != 0){
+            randomYPosition = randomYPosition + 1;
+        }
+
+        positionX = (pointSize * randomXPosition) + pointSize;
+        positionY = (pointSize * randomYPosition) + pointSize;
+    }
+    private void moveSnake(){
+
+        timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+
+                int headPositionX = snakesList.get(0).getPositionX();
+                int headPositionY = snakesList.get(0).getPositionY();
+
+                if(headPositionX == positionX && headPositionY == positionY){
+                    grow();
+                    addApples();
+                }
+
+                switch (move){
+                    case 0:
+                        snakesList.get(0).setPositionX(headPositionX);
+                        snakesList.get(0).setPositionY(headPositionY + (pointSize * 2));
+                        break;
+                    case 1:
+                        snakesList.get(0).setPositionX(headPositionX + (pointSize * 2));
+                        snakesList.get(0).setPositionY(headPositionY);
+                        break;
+                    case 2:
+                        snakesList.get(0).setPositionX(headPositionX);
+                        snakesList.get(0).setPositionY(headPositionY - (pointSize * 2));
+                        break;
+                    case 3:
+                        snakesList.get(0).setPositionX(headPositionX - (pointSize * 2));
+                        snakesList.get(0).setPositionY(headPositionY);
+                        break;
+                }
+
+                if(endGame(headPositionX, headPositionY)){
+                    Intent intent = new Intent(this, EndActivity.class);
+                    startActivity(intent);
+                }
+                else {
+                    canvas = surfaceHolder.lockCanvas();
+                    canvas.drawColor(Color.WHITE, PorterDuff.Mode.CLEAR);
+                    canvas.drawCircle(positionX, positionY, pointSize, createPointcolorApple());
+                    canvas.drawCircle(snakesList.get(0).getPositionX(), snakesList.get(0).getPositionY(),pointSize, createPointColorSnake());
+                    for (int i = 1; i < snakesList.size(); i++){
+                        int axl1 = snakesList.get(i).getPositionX();
+                        int axl2 = snakesList.get(i).getPositionY();
+
+                        snakesList.get(i).setPositionX(headPositionX);
+                        snakesList.get(i).setPositionY(headPositionY);
+                        canvas.drawCircle(snakesList.get(i).getPositionX(), snakesList.get(i).getPositionY(),pointSize, createPointColorSnake());
+
+                        headPositionX = axl1;
+                        headPositionY = axl2;
+                    }
+
+                    surfaceHolder.unlockCanvasAndPost(canvas);
+                }
+            }
+        }, 1000 - speed, 1000 - speed);
+    }
+    private void grow(){
+
+        Snakes snakes = new Snakes(0, 0);
+        snakesList.add(snakes);
+        score++;
+        soundPool.load(this, R.raw.martelada, 1);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                scoreTxt.setText(String.valueOf(score));
+            }
+        });
+    }
+    private boolean endGame(int headPositionX, int headPositionY)    {
+        boolean gameOver = false;
+
+        if(snakesList.get(0).getPositionX() <= 0 || snakesList.get(0).getPositionX() >= surfaceView.getWidth() || snakesList.get(0).getPositionY() <= 0 || snakesList.get(0).getPositionY() >= surfaceView.getHeight()){
+            gameOver = true;
+        }
+        else{
+            for (int i = 0; i < snakesList.size(); i++){
+                if (headPositionX == snakesList.get(i).getPositionX() || headPositionY == snakesList.get(i).getPositionY()){
+                    gameOver = true;
+                }
+            }
+        }
+
+
+        return gameOver;
+    }
+    private Paint createPointColorSnake(){
+        if(paint == null){
+            paint = new Paint();
+            paint.setColor(Color.GREEN);
+            paint.setStyle(Paint.Style.FILL);
+            paint.setAntiAlias(true);
+        }
+        return paint;
+    }
+    private Paint createPointcolorApple(){
+        if(paint == null){
+            paint = new Paint();
+            paint.setColor(Color.RED);
+            paint.setStyle(Paint.Style.FILL);
+            paint.setAntiAlias(true);
+        }
+        return paint;
+    }
+    private void saveScore() {
+
+        try {
+            FileOutputStream fos = GameActivity.this.openFileOutput("score.txt", Context.MODE_APPEND);
+            String strScore = String.valueOf(score).concat("\n");
+            fos.write (strScore.getBytes());
+            fos.close();
+        } catch (FileNotFoundException fnf){
+            fnf.printStackTrace();
+        } catch (IOException ioe){
+            ioe.printStackTrace();
+        }
+    }
+
+
+
+
+
+
+    /*Button btnFinish;
+    Button[] btnDirections;
     Handler handler = new Handler();
     Chronometer chronometer;
     TextView txtScore;
     Boolean isSaved = false;
-    MediaPlayer mp;
-    SoundPool soundPool;
-    AudioAttributes audioAttributes;
-    int maxStreams;
-    int snd_score, snd_hammer;
-
-    final int DELAY_START = 500;
-    final int DELAY_MOLE_UP = 800;
-    final int DELAY_BETWEEN_MOLE = 1500;
-    final int END_TIME = 3 * 10000;
 
     private int score;
 
@@ -51,15 +319,6 @@ public class GameActivity extends AppCompatActivity implements Runnable {
         chronometer = findViewById(R.id.chronometer);
         txtScore = findViewById(R.id.text_score);
 
-        btnMoles[0] = findViewById(R.id.btnMole01);
-        btnMoles[1] = findViewById(R.id.btnMole02);
-        btnMoles[2] = findViewById(R.id.btnMole03);
-        btnMoles[3] = findViewById(R.id.btnMole04);
-        btnMoles[4] = findViewById(R.id.btnMole05);
-        btnMoles[5] = findViewById(R.id.btnMole06);
-        btnMoles[6] = findViewById(R.id.btnMole07);
-        btnMoles[7] = findViewById(R.id.btnMole08);
-        btnMoles[8] = findViewById(R.id.btnMole09);
 
         audioAttributes = new AudioAttributes.Builder()
                 .setUsage(AudioAttributes.USAGE_GAME)
@@ -119,43 +378,13 @@ public class GameActivity extends AppCompatActivity implements Runnable {
     }
 
     private int ChooseRandomMole(){
-        int randomId = new Random().nextInt(btnMoles.length);
-
-        for (int i = 0; i < btnMoles.length; i++)
-        {
-            if(randomId == i)
-            {
-                return i;
-            }
-        }
-        return 0;
     }
 
     private void MoleShow(int randomMole){
-        btnMoles[randomMole].setBackground(getDrawable(R.drawable.selector_btn_mole));
-        btnMoles[randomMole].setForeground(getDrawable(R.drawable.selector_btn_mole));
-
-        handler.postDelayed(() -> {
-            if(btnMoles[randomMole].isPressed()) {
-                score++;
-                soundPool.play(snd_score, 100, 100, 1, 0, 1);
-            }
-            btnMoles[randomMole].setBackground(getDrawable(R.drawable.mole_down));
-            btnMoles[randomMole].setForeground(getDrawable(R.drawable.mole_down));
-        }, DELAY_MOLE_UP);
     }
 
-    private void saveScore() {
+     */
 
-        try {
-            FileOutputStream fos = GameActivity.this.openFileOutput("score.txt", Context.MODE_APPEND);
-            String strScore = String.valueOf(score).concat("\n");
-            fos.write (strScore.getBytes());
-            fos.close();
-        } catch (FileNotFoundException fnf){
-            fnf.printStackTrace();
-        } catch (IOException ioe){
-            ioe.printStackTrace();
-        }
-    }
+
+
 }

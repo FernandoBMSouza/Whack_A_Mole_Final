@@ -1,142 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".GameActivity">
 
-    <LinearLayout
+    <RelativeLayout
+        android:layout_above="@+id/bottomBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/holo_red_light"
+        android:padding="6dp">
+
+
+    <SurfaceView
+        android:id="@+id/surfaceView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="match_parent" />
+
+    <TextView
+        android:id="@+id/scoreTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0"
+        android:textColor="#FFFFFF"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"/>
+
+    </RelativeLayout>
+    
+    <LinearLayout
+        android:id="@+id/bottomBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         android:gravity="center"
-        android:background="@drawable/game_background">
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"
+        android:background="@color/black"
+        android:layout_alignParentBottom="true">
 
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/topBtn"
+            android:layout_width="80dp"
+            android:layout_height="50dp"
+            android:background="@android:color/holo_green_light"
+            android:src="@drawable/ic_baseline_arrow_drop_up_24"
+            />
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center">
+            android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/btnMole01"
-                android:layout_width="70sp"
-                android:layout_height="70sp"
-                android:layout_marginHorizontal="32sp"
-                android:background="@drawable/mole_down"
-                android:foreground="@drawable/mole_down"
-                android:onClick="onClickMole"></Button>
-
-            <Button
-                android:id="@+id/btnMole02"
-                android:layout_width="70sp"
-                android:layout_height="70sp"
-                android:layout_marginHorizontal="32dp"
-                android:background="@drawable/mole_down"
-                android:foreground="@drawable/mole_down"
-                android:onClick="onClickMole"></Button>
-
-            <Button
-                android:id="@+id/btnMole03"
-                android:layout_width="70sp"
-                android:layout_height="70sp"
-                android:layout_marginHorizontal="32sp"
-                android:background="@drawable/mole_down"
-                android:foreground="@drawable/mole_down"
-                android:onClick="onClickMole"></Button>
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/leftBtn"
+                android:layout_width="80dp"
+                android:layout_height="50dp"
+                android:background="@android:color/holo_green_light"
+                android:src="@drawable/ic_baseline_arrow_left_24"
+                />
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/rightBtn"
+                android:layout_width="80dp"
+                android:layout_height="50dp"
+                android:background="@android:color/holo_green_light"
+                android:src="@drawable/ic_baseline_arrow_right_24"
+                />
 
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center">
+        <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/bottomBtn"
+        android:layout_width="80dp"
+        android:layout_height="50dp"
+        android:background="@android:color/holo_green_light"
+        android:src="@drawable/ic_baseline_arrow_drop_down_24"
+        />
 
-            <Button
-                android:id="@+id/btnMole04"
-                android:layout_width="70sp"
-                android:layout_height="70sp"
-                android:layout_marginHorizontal="32sp"
-                android:background="@drawable/mole_down"
-                android:foreground="@drawable/mole_down"
-                android:onClick="onClickMole"></Button>
-
-            <Button
-                android:id="@+id/btnMole05"
-                android:layout_width="70sp"
-                android:layout_height="70sp"
-                android:layout_marginHorizontal="32dp"
-                android:background="@drawable/mole_down"
-                android:foreground="@drawable/mole_down"
-                android:onClick="onClickMole"></Button>
-
-            <Button
-                android:id="@+id/btnMole06"
-                android:layout_width="70sp"
-                android:layout_height="70sp"
-                android:layout_marginHorizontal="32sp"
-                android:background="@drawable/mole_down"
-                android:foreground="@drawable/mole_down"
-                android:onClick="onClickMole"></Button>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center">
-
-            <Button
-                android:id="@+id/btnMole07"
-                android:layout_width="70sp"
-                android:layout_height="70sp"
-                android:layout_marginHorizontal="32sp"
-                android:background="@drawable/mole_down"
-                android:foreground="@drawable/mole_down"
-                android:onClick="onClickMole"></Button>
-
-            <Button
-                android:id="@+id/btnMole08"
-                android:layout_width="70sp"
-                android:layout_height="70sp"
-                android:layout_marginHorizontal="32dp"
-                android:background="@drawable/mole_down"
-                android:foreground="@drawable/mole_down"
-                android:onClick="onClickMole"></Button>
-
-            <Button
-                android:id="@+id/btnMole09"
-                android:layout_width="70sp"
-                android:layout_height="70sp"
-                android:layout_marginHorizontal="32sp"
-                android:background="@drawable/mole_down"
-                android:foreground="@drawable/mole_down"
-                android:onClick="onClickMole"></Button>
-
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/text_score"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Score: 00"
-            android:textSize="24sp"/>
-
-        <Chronometer
-            android:id="@+id/chronometer"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="24sp" />
-
-        <Button
-            android:id="@+id/btnFinish"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Terminar"
-            android:onClick="onClick" />
 
     </LinearLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>
