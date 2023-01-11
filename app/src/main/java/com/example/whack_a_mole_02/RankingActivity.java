@@ -1,6 +1,7 @@
 package com.example.whack_a_mole_02;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -21,6 +22,7 @@ public class RankingActivity extends AppCompatActivity {
 
     Button btnReturn;
     TextView txtRanking; //TODO: Lógica para alterar o texto do ranking
+    MediaPlayer mediaPlayer;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -29,6 +31,8 @@ public class RankingActivity extends AppCompatActivity {
 
         btnReturn = findViewById(R.id.btnReturn);
         txtRanking = findViewById(R.id.text_ranking);
+        mediaPlayer = MediaPlayer.create(this, R.raw.music);
+        mediaPlayer.start();
     }
 
     @Override
@@ -95,6 +99,7 @@ public class RankingActivity extends AppCompatActivity {
         if(view == btnReturn){
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
+            mediaPlayer.stop();
         }
     }
 }

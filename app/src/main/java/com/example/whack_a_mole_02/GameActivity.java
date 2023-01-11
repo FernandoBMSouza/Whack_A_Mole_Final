@@ -3,6 +3,7 @@ package com.example.whack_a_mole_02;
 import android.app.AlertDialog;
 import android.app.assist.AssistStructure;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -57,6 +58,8 @@ public class GameActivity extends AppCompatActivity implements SurfaceHolder.Cal
     int snakePositionY = 50;
     private Canvas canvas = null;
     private Paint paint = null;
+    int headPositionX = snakesList.get(0).getPositionX();
+    int headPositionY = snakesList.get(0).getPositionY();
     private AssistStructure.ViewNode surfaceView;
 
     /*
@@ -158,11 +161,11 @@ public class GameActivity extends AppCompatActivity implements SurfaceHolder.Cal
 
     private void addApples(){
 
-        int surfaceWidth = surfaceView.getWidth() - (pointSize * 2);
-        int surfaceHeight = surfaceView.getHeight() - (pointSize * 2);
+        //int surfaceWidth = surfaceView.getWidth() - (pointSize * 2);
+        //int surfaceHeight = surfaceView.getHeight() - (pointSize * 2);
 
-        int randomXPosition = new Random().nextInt (surfaceWidth / pointSize);
-        int randomYPosition = new Random().nextInt (surfaceHeight / pointSize);
+        int randomXPosition = new Random().nextInt (50);
+        int randomYPosition = new Random().nextInt (50);
 
         if((randomXPosition % 2) != 0){
             randomXPosition = randomXPosition + 1;
@@ -173,6 +176,8 @@ public class GameActivity extends AppCompatActivity implements SurfaceHolder.Cal
 
         positionX = (pointSize * randomXPosition) + pointSize;
         positionY = (pointSize * randomYPosition) + pointSize;
+
+        scoreTxt.setText("5");
     }
     private void moveSnake(){
 
@@ -181,13 +186,13 @@ public class GameActivity extends AppCompatActivity implements SurfaceHolder.Cal
             @Override
             public void run() {
 
-                int headPositionX = snakesList.get(0).getPositionX();
-                int headPositionY = snakesList.get(0).getPositionY();
+
 
                 if(headPositionX == positionX && headPositionY == positionY){
                     grow();
                     addApples();
                 }
+
 
                 switch (move){
                     case 0:
@@ -209,25 +214,30 @@ public class GameActivity extends AppCompatActivity implements SurfaceHolder.Cal
                 }
 
                 if(endGame(headPositionX, headPositionY)){
-                    Intent intent = new Intent(this, EndActivity.class);
-                    startActivity(intent);
+                    timer.purge();
+                    timer.cancel();
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(GameActivity.this);
+                    builder.setMessage("ur score = " + score);
+                    builder.setTitle("game over");
+                    builder.setCancelable(false);
+                    builder.setPositiveButton("start again", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            init();
+                        }
+                    });
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            builder.show();
+                        }
+                    });
+                    //Intent intent = new Intent(this, EndActivity.class);
+                   // startActivity(intent);
                 }
                 else {
-                    canvas = surfaceHolder.lockCanvas();
-                    canvas.drawColor(Color.WHITE, PorterDuff.Mode.CLEAR);
-                    canvas.drawCircle(positionX, positionY, pointSize, createPointcolorApple());
-                    canvas.drawCircle(snakesList.get(0).getPositionX(), snakesList.get(0).getPositionY(),pointSize, createPointColorSnake());
-                    for (int i = 1; i < snakesList.size(); i++){
-                        int axl1 = snakesList.get(i).getPositionX();
-                        int axl2 = snakesList.get(i).getPositionY();
-
-                        snakesList.get(i).setPositionX(headPositionX);
-                        snakesList.get(i).setPositionY(headPositionY);
-                        canvas.drawCircle(snakesList.get(i).getPositionX(), snakesList.get(i).getPositionY(),pointSize, createPointColorSnake());
-
-                        headPositionX = axl1;
-                        headPositionY = axl2;
-                    }
+                    onDraw();
 
                     surfaceHolder.unlockCanvasAndPost(canvas);
                 }
@@ -247,6 +257,23 @@ public class GameActivity extends AppCompatActivity implements SurfaceHolder.Cal
             }
         });
     }
+    private void onDraw() {
+        canvas = surfaceHolder.lockCanvas();
+        canvas.drawColor(Color.WHITE, PorterDuff.Mode.CLEAR);
+        canvas.drawCircle(snakesList.get(0).getPositionX(), snakesList.get(0).getPositionY(), pointSize, createPointColorSnake());
+        canvas.drawCircle(positionX, positionY, pointSize, createPointColorSnake());
+        for (int i = 1; i < snakesList.size(); i++) {
+            int axl1 = snakesList.get(i).getPositionX();
+            int axl2 = snakesList.get(i).getPositionY();
+
+            snakesList.get(i).setPositionX(headPositionX);
+            snakesList.get(i).setPositionY(headPositionY);
+            canvas.drawCircle(snakesList.get(i).getPositionX(), snakesList.get(i).getPositionY(), pointSize, createPointColorSnake());
+
+            headPositionX = axl1;
+            headPositionY = axl2;
+        }
+    }
     private boolean endGame(int headPositionX, int headPositionY)    {
         boolean gameOver = false;
 
@@ -264,6 +291,7 @@ public class GameActivity extends AppCompatActivity implements SurfaceHolder.Cal
 
         return gameOver;
     }
+
     private Paint createPointColorSnake(){
         if(paint == null){
             paint = new Paint();
@@ -273,15 +301,7 @@ public class GameActivity extends AppCompatActivity implements SurfaceHolder.Cal
         }
         return paint;
     }
-    private Paint createPointcolorApple(){
-        if(paint == null){
-            paint = new Paint();
-            paint.setColor(Color.RED);
-            paint.setStyle(Paint.Style.FILL);
-            paint.setAntiAlias(true);
-        }
-        return paint;
-    }
+
     private void saveScore() {
 
         try {
